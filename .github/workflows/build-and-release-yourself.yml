@@ -74,7 +74,8 @@ jobs:
               git+https://github.com/asdfzxcvbn/pyzule-rw.git
           # releases/latest/download redirect avoids api.github.com rate limit (anon 60/hr -> 403)
           ARCH=$(uname -m); [ "$ARCH" = "x86_64" ] && SUFFIX=macos-amd64 || SUFFIX=macos-arm64
-          sudo curl -fsSL "https://github.com/asdfzxcvbn/ipapatch/releases/latest/download/ipapatch.${SUFFIX}" \
+          sudo curl --retry 5 --retry-all-errors --retry-delay 2 --retry-max-time 180 -fsSL \
+              "https://github.com/asdfzxcvbn/ipapatch/releases/latest/download/ipapatch.${SUFFIX}" \
               -o /usr/local/bin/ipapatch
           sudo chmod +x /usr/local/bin/ipapatch
 
